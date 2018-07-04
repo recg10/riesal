@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"      
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+ <h:form id="formGuiaDespachoConsulta">
+ 	
+	<p:growl id="growl" sticky="true" showDetail="true" life="1000" />
+	<center>
+	<h:panelGrid columns="5" columnClasses="label, value">
+	   
+       <h:outputText value="Numero de Guia:" />
+       <p:inputText value="#{preGuiaDespachoBean.idGuia}" label="Numero de Guia:"/>
+       <p:commandButton value="Consultar" ajax="true" process="@this" update="@form optionPanel" 
+       actionListener="#{preGuiaDespachoBean.consultar}"/>
+    </h:panelGrid>	 
+       <p:dataTable  id="itemList" var="pro" value="#{preGuiaDespachoBean.listPreGuiaDespachoDTO}" rows="10" paginator="true" style="width:100%" rowIndexVar="rowId">
+			
+			<p:column headerText="id">
+		    	<h:outputText value="#{pro.idGuiaDespacho}" />						        
+		    </p:column>	
+		    <p:column headerText="Rut Proveedor">
+		    	<h:outputText value="#{pro.rutProveedor}" />						        
+		    </p:column>
+		    <p:column headerText="Guia">
+		    	<h:outputText value="#{pro.numeroGuia}" />						        
+		    </p:column>
+		    <p:column headerText="Usuario">
+		    	<h:outputText value="#{pro.usuarioRut}" />						        
+		    </p:column>			
+		    <p:column headerText="Accion" style="text-align: center;">		
+			  	<p:commandLink  process="@this" update="@form itemList" ajax="true" title="Eliminar Guia nro #{pro.idGuiaDespacho}" actionListener="#{preGuiaDespachoBean.eliminarGuiaDespacho}">
+		    		<f:param name="rowId" value="#{rowId}" />
+		    		<p:graphicImage url="/img/Delete_Icon.png" width="30" height="30"  />	
+		    		<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />			    				
+			  	</p:commandLink>		  	
+		    </p:column>
+		</p:dataTable>
+    
+    <p:commandButton value="Ingresar Guia de Despacho" ajax="true" process="@this" update="@form optionPanel" actionListener="#{preGuiaDespachoBean.guiaDespacho}"/>
+    
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    </center>  
+			
+</h:form>	
+</ui:composition>

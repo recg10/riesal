@@ -1,0 +1,41 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="xml">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element type="xs:short" name="nCotizacion"/>
+        <xs:element type="xs:string" name="fechaCotizacion"/>
+        <xs:element type="xs:string" name="nombreEmpresa"/>
+        <xs:element type="xs:string" name="rutEmpresa"/>
+        <xs:element type="xs:string" name="direccionEmpresa"/>
+        <xs:element type="xs:string" name="giroEmpresa"/>
+        <xs:element type="xs:string" name="plantel"/>
+        <xs:element type="xs:string" name="area"/>
+        <xs:element type="xs:string" name="solicita"/>
+        <xs:element type="xs:string" name="descripcionTrabajo"/>
+        <xs:element type="xs:int" name="valorManoObra"/>
+        <xs:element type="xs:int" name="valorMateriales"/>
+        <xs:element type="xs:int" name="valorTraslado"/>
+        <xs:element type="xs:int" name="gastoOperacional"/>
+        <xs:element type="xs:int" name="utilidad"/>
+        <xs:element type="xs:int" name="totalNeto"/>
+        <xs:element name="productos">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="producto" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element type="xs:byte" name="numero"/>
+                    <xs:element type="xs:string" name="detalle"/>
+                    <xs:element type="xs:byte" name="cantidad"/>
+                    <xs:element type="xs:int" name="valorUnitario"/>
+                    <xs:element type="xs:int" name="neto"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

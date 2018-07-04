@@ -1,0 +1,37 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Menu principal</title>
+    </h:head>
+    <h:body>
+    <center>
+    <h:graphicImage url="/img/agrosuper.PNG"/>
+    </center>
+        <h:form>		    
+		<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			<center>
+			<p:panel id="basic" header="Reporte de documentos" footer="Debe seleccionar parametros y luego presione generar." 
+			style="margin-bottom:20px; width:80%; text-align:center">
+	            <h:panelGrid columns="5" columnClasses="label, value">
+	              <h:outputText value="Ingrese fecha desde :" />
+	              <p:inputText value="#{reportBean.fechaDesde}" />    
+	              <h:outputText value="Ingrese fecha hasta :" />
+	              <p:inputText value="#{reportBean.fechaHasta}" />              
+				  <p:commandButton value="Generar" update="growl" process="@this"/>
+	            </h:panelGrid>           
+		    </p:panel>
+		    </center>
+	    
+	    		
+        <p:dock position="bottom" halign="center" itemWidth="80">								
+		    <p:menuitem value="Mantenedor Usuario" icon="/img/usuario.PNG" actionListener="#{loginBean.manUser}"/>
+		    <p:menuitem value="Mantenedor Alumnos" icon="/img/usuario.PNG" actionListener="#{loginBean.manAlumnos}"/>
+		    <p:menuitem value="Movimiento" icon="/img/pig.PNG" actionListener="#{loginBean.movements}"/>
+		    <p:menuitem value="Informes" icon="/img/informe.PNG" actionListener="#{loginBean.report}"/>
+		    <p:menuitem value="Cerrar" icon="/img/cerrar.PNG" actionListener="#{loginBean.cerrar}" ajax="true" />
+		</p:dock>
+        
+</h:form>	
+    </h:body>
+</html>

@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"      
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Cotizacion</title>
+    </h:head>
+    
+    <h:outputStylesheet>
+		.left {
+			    text-align: left;
+		}
+		 
+		.center {
+		     text-align: center;
+		}
+		 
+		.right {
+		     text-align: right;
+		}
+		 
+		.buttonPanel {
+		     text-align: center;
+		     width:80%;
+		     margin:0px auto;
+		}
+	</h:outputStylesheet>
+    
+   
+    <h:body>
+    <h:form id="formCotizacion">
+    <p:growl id="growlCotizacion" sticky="true" showDetail="true" life="3000" />
+	        	<p:panelGrid columns="6" style="width:100%">
+	        		<h:panelGroup>
+	        			<p:outputLabel value="Cotizacion: "/>
+	        			<p:inputText id="idCotizacion" value="#{preCotizacionBean.preCotizacionDTO.idCotizacion}" type="hidden"/>
+	        			<p:inputText id="id" type="hidden" value="0"/>
+	        		</h:panelGroup>
+	        		<p:outputLabel value="#{preCotizacionBean.preCotizacionDTO.idCotizacion}"/>
+	        		<p:outputLabel value="Empresa"/> <p:inputText id="empresa" value="#{preCotizacionBean.preCotizacionDTO.empresa}"/>
+	        		
+		        		<p:outputLabel value="Area"/> 
+		        		<p:selectOneMenu id="area" style="width:125px" value="#{preCotizacionBean.preCotizacionDTO.area}">
+				            <f:selectItem itemLabel="Selecione..." itemValue="" />
+				            <f:selectItem itemLabel="Reproductoras" itemValue="1" />
+				            <f:selectItem itemLabel="Crianza" itemValue="2" />
+				            <f:selectItem itemLabel="Segundo estado" itemValue="3" />
+				        </p:selectOneMenu>
+ 					
+	        		
+	        		<p:outputLabel value="Plantel"/>			        
+				        <p:selectOneMenu id="plantel" value="#{preCotizacionBean.preCotizacionDTO.plantel}">
+				            <f:selectItem itemLabel="Selecione..." itemValue="" />
+				            <f:selectItems value="#{preCotizacionBean.listPlantel}" var="item" itemLabel="#{item.plantel}" itemValue="#{item.id}" />
+				        </p:selectOneMenu>
+
+	        		<p:outputLabel value="Direccion"/> <p:inputText id="direccion" value="#{preCotizacionBean.preCotizacionDTO.direccion}"/>
+	        		<p:outputLabel value="Supervisor"/> <p:inputText id="supervisor" value="#{preCotizacionBean.preCotizacionDTO.supervisor}"/>
+	        		
+	        		<p:outputLabel value="Codigo.."/> <p:inputText id="codigo" value="#{preCotizacionBean.preCotizacionDTO.codigo}"/>
+	        		<p:outputLabel value="Fecha"/> <p:calendar id="fecha" pattern="dd-MM-yyyy" mask="true" value="#{preCotizacionBean.preCotizacionDTO.fecha}"/>
+	        		<p:outputLabel value="Trabajo"/> <p:inputText id="trabajo" value="#{preCotizacionBean.preCotizacionDTO.trabajo}"/>
+	        	</p:panelGrid>
+	        	<p:panelGrid columns="3"  style="width:100%">
+	        		<p:outputLabel value="Detalle Trabajo"/> 
+					<p:inputTextarea id="detalleTrabajo" rows="3" cols="100" counter="display" maxlength="100" counterTemplate="{0} pendiente por escribir." autoResize="false" value="#{preCotizacionBean.preCotizacionDTO.detalleTrabajo}"/>
+    				<h:outputText id="display" />	        		
+	        	</p:panelGrid>
+	        	<p:outputLabel value="Observaciones y Plazos"/> 
+	        	 
+	        	 <p:panelGrid columns="2"  style="width:100%">        	 	
+						<p:outputLabel value="1"/>
+						<p:inputTextarea id="obs1" rows="2" cols="80" counter="display" maxlength="100" counterTemplate="{0} pendiente por escribir." autoResize="false" />
+	        	 </p:panelGrid>
+	        	
+	        	<p:panelGrid columns="3"  style="width:100%">
+	        		<p:commandButton rendered="#{preCotizacionBean.preCotizacionDTO.idCotizacion == null}" value="Guardar Presupuesto"  process="@this id idCotizacion area plantel direccion supervisor codigo fecha trabajo empresa detalleTrabajo" 
+	        		title="Guardar presupuesto" actionListener="#{preCotizacionBean.save}"
+					ajax="true" image="ui-icon-person" style="text-align: center" update="@form"/>
+					
+					<p:commandButton rendered="#{preCotizacionBean.preCotizacionDTO.idCotizacion != null}" value="Modificar Presupuesto"  process="@this id idCotizacion area plantel direccion supervisor codigo fecha trabajo empresa detalleTrabajo" 
+	        		title="Modificar presupuesto" actionListener="#{preCotizacionBean.update}"
+					ajax="true" image="ui-icon-person" style="text-align: center" update="@form"/>
+					
+					<p:commandButton value="Finalizar Presupuesto" title="Finzalizar presupuesto" process="@this idCotizacion area plantel direccion supervisor codigo fecha trabajo empresa detalleTrabajo"
+					  ajax="true" image="ui-icon-person" style="float:right" update="@form" actionListener="#{preCotizacionBean.finalizar}"/>
+					
+	
+	        	</p:panelGrid>
+	        	
+	        	
+	        	<p:panelGrid columns="1" style="width:100%; text-align: center;">	        		
+	        		<p:commandButton disabled="#{preCotizacionBean.preCotizacionDTO.idCotizacion == null}" value="Agregar items a cotizaciones" process="@this" title="Agregar item a cotizacion : #{preCotizacionBean.preCotizacionDTO.idCotizacion}"
+					ajax="true" image="ui-icon-person" update="@this" actionListener="#{preCotizacionBean.nuevoItem}"
+					oncomplete="PF('wvdlgItems').show();"/>
+					<p:dataTable  id="itemList" var="user" value="#{preCotizacionBean.listPreCotizacionItemDTO}" rows="10" paginator="true" style="width:100%" rowIndexVar="rowId">
+							<p:column headerText="id">
+						    	<h:outputText value="#{user.id}" />						        
+						    </p:column>	
+						    <p:column headerText="idCotizacion" visible="false">
+						    	<h:outputText value="#{user.idCotizacion}" />						        
+						    </p:column>						    
+						    <p:column headerText="idItemCotozaciom" visible="false">
+								<h:outputText value="#{user.idItem}" />
+						    </p:column>
+						    <p:column headerText="Descripcion">
+						        <h:outputText value="#{user.descripcion}"/>
+						    </p:column>
+						    <p:column headerText="Cantidad">
+						    	<div style="text-align: right;">
+						        	<h:outputText value="#{user.cantidad}"/>
+						        </div>
+						    </p:column>		
+						    <p:column headerText="Valor Unitario">
+						    	<div style="text-align: right;">
+						        	<h:outputText value="#{user.valorUnitario}" />
+						        </div>
+						    </p:column>
+						    <p:column headerText="Total Neto">
+						    	<div style="text-align: right;">
+						        	<h:outputText value="#{user.totalNeto}" />
+						        </div>
+						    </p:column>							 	
+						    <p:column headerText="Accion" style="text-align: center;">
+							    <p:commandLink process="@this" update="@form" oncomplete="PF('wvdlgItems').show();"  title="Modifica Item" actionListener="#{preCotizacionBean.editarItem}">
+							    	<p:graphicImage url="/img/update.ico" width="30" height="30"  />
+							    	<f:param name="idPreCotizacionItem" value="#{user.id}" />				    	
+							    </p:commandLink>							   
+							  	<p:commandLink process="@this" update="@form"  title="Elimina Item" actionListener="#{preCotizacionBean.eliminarItem}">				   		
+							   		<f:param name="idPreCotizacionItem" value="#{user.id}" />
+							     	<h:graphicImage url="/img/Delete_Icon.png" width="30" height="30" />
+							     	<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+							  	</p:commandLink>
+							  	
+							  	<p:commandLink update="@form" process="@this" title="Realiza Cotizacion" actionListener="#{preCotizacionBean.realizarCotizacion}" onclick="seteaID(#{user.id});"  oncomplete="PF('wvdlgDetalles').show();" >				   		
+							   		<f:param name="idCotizacion"  value="#{user.idCotizacion}" />
+							   		<f:param name="id" value="#{user.id}" />
+							   		<f:param name="rowId" value="#{rowId}" />
+							   		<f:setPropertyActionListener target="#{preDetalleCotizacionBean.id}" value="#{user.id}" />
+							   		<f:setPropertyActionListener target="#{preMOBean.id}" value="#{user.id}" />
+							   		<f:setPropertyActionListener target="#{preFabricacionBean.id}" value="#{user.id}" />
+							     	<h:graphicImage url="/img/iconcotizador.png" width="30" height="30" />							     	
+							  	</p:commandLink>
+							  	
+						    </p:column>
+						</p:dataTable>
+	        	</p:panelGrid>
+	        	
+	        	<script>
+	        	 	function seteaID(valor){
+	        	 		//alert('pase'+valor);
+	        	 		document.getElementById("formCotizacion:id").value = valor;
+	        	 		//alert('pase:'+valor);
+	        	 	}
+	        	 </script>
+	        	 
+	        	<p:dialog id="dlgDetalles"  header="Materiales"  widgetVar="wvdlgDetalles" width="1200" height="400"     	 
+	        	resizable="true" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true" onHide="calcula()">	
+					<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			    	<p:tabView scrollable="true" id="tvCotizacion">				        
+				        <p:tab  title="Detalle de Materiales">
+				        	<ui:include  src="detalleMateriales.xhtml"/>	        
+				        </p:tab>
+				        <p:tab title="Detalle Mano de Obra">
+				        	<ui:include src="detalleMO.xhtml"/>
+				        </p:tab>
+				        <p:tab title="Fabricacion Material">
+				        	<ui:include src="fabricacion.xhtml"/>
+						</p:tab>
+			    	</p:tabView>
+				</p:dialog>
+				
+				<p:dialog id="dlgItems"  header=" #{preCotizacionBean.titulo} Materiales"  widgetVar="wvdlgItems" width="400" height="150"     	 
+	        	resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true" >
+	        	<h:panelGrid  columns="2" columnClasses="label, value">
+			    	<h:outputText value="Descripcion:" />
+				    <p:inputText  value="#{preCotizacionBean.preCotizacionItemDTO.descripcion}" required="true" label="Descripcion:"/>
+				    <h:outputText value="Cantidad:" />
+				    <p:inputText  value="#{preCotizacionBean.preCotizacionItemDTO.cantidad}" required="true" label="Cantidad:"/>
+				    <p:commandButton rendered="#{preCotizacionBean.botonVisible}" value="Guardar" process="@this dlgItems"  onclick="PF('wvdlgItems').hide();"  
+				    ajax="true" update="@form formCotizacion" actionListener="#{preCotizacionBean.saveItem}"/>
+				    <p:commandButton rendered="#{!preCotizacionBean.botonVisible}" process="@this dlgItems" value="Modificar" update="itemList"  ajax="true"  image="ui-icon-disk" oncomplete="PF('wvdlgItems').hide();"
+				    actionListener="#{preCotizacionBean.updateItem}"/>					
+					<p:commandButton value="Cerrar" ajax="true"  image="ui-icon-arrow-4-diag" onclick="PF('wvdlgItems').hide();"/>
+					
+							  
+				 </h:panelGrid>
+				</p:dialog>
+				<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			    </p:confirmDialog>
+			   
+			   
+			   <!-- Porcentajes de Ganancia-->
+			   <h:panelGroup id="idPanelPorcentajes">
+				   <p:panelGrid columns="2" style="width:100%" >			          		
+		        		<p:outputLabel id="totalNetoPresupuesto" value="Total Neto Presupuesto:"/> <p:inputText value="#{preCotizacionBean.totalNetoPresupuesto}"/>
+		        	</p:panelGrid>
+		        	<p:panelGrid columns="6" style="width:100%" columnClasses="left,right,left,right,left,right">
+		        	
+		        		<p:outputLabel value="Mano de Obra:"/>
+		        		<p:outputLabel value="#{preCotizacionBean.totalMOPresupuesto}"/>
+		        		<p:outputLabel value="%"/>
+		        		<p:inputText id="moPorc" value="#{preCotizacionBean.preCotizacionDTO.moPorc}" size="5">
+		        			<p:ajax event="blur" process="@this" update="resultadoTotalMO" listener="#{preCotizacionBean.calculaResultadoMO}"></p:ajax>
+		        		</p:inputText>
+		        		<p:outputLabel  value="Resultado Mano Obra:"/><p:outputLabel id="resultadoTotalMO" value="#{preCotizacionBean.preCotizacionDTO.moResult}"/>
+		        		
+		        		 	        		
+		        		<p:outputLabel value="Materiales y/o Maquinarias Riesal Limitada:"/>
+		        			<p:outputLabel id="totalMaterialesPresupuesto" value="#{preCotizacionBean.totalMaterialesPresupuesto}"/>
+		        			<p:outputLabel value="%"/>
+		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.materialesPorc}" size="5">
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalMateriales" listener="#{preCotizacionBean.calculaResultadoMateriales}"></p:ajax>
+		        			</p:inputText>
+		        		<p:outputLabel value="Resultado Materiales:"/><p:outputLabel id="resultadoTotalMateriales" value="#{preCotizacionBean.preCotizacionDTO.materialesResult}"/>
+		        		
+		        		
+		        		<p:outputLabel value="Traslado Personal:"/> 
+		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.trasladoValor}">
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalTraslado" listener="#{preCotizacionBean.calculaResultadoTotalTraslado}"></p:ajax>
+		        			</p:inputText>
+		        			<p:outputLabel value="Cantidad:"/>
+		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.trasladoCantidad}" size="5">
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalTraslado" listener="#{preCotizacionBean.calculaResultadoTotalTraslado}"></p:ajax>
+		        			</p:inputText>
+		        			<p:outputLabel value="Resultado Traslado Personal:"/>
+		        			<p:outputLabel id="resultadoTotalTraslado" value="#{preCotizacionBean.preCotizacionDTO.trasladoTotal}"/>
+		        			
+		        			
+		        		<p:outputLabel value="Gastos Operacionales:"/>
+		        			<p:outputLabel value="#{preCotizacionBean.calculaTotal}"/>
+		        			<p:outputLabel value="%"/>
+		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.goPorc}" size="5">		        			
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalGO" listener="#{preCotizacionBean.calculaResultadoGO}"></p:ajax>
+		        			</p:inputText>
+		        			<p:outputLabel value="Resultado Gastos Operacionales:"/>
+		        			<p:outputLabel id="resultadoTotalGO" value="#{preCotizacionBean.preCotizacionDTO.goResult}"/>
+		        		
+		        		
+		        		<p:outputLabel value="Utilidad riesal:"/>
+		        		<p:outputLabel value="#{preCotizacionBean.calculaTotal}"/>
+		        		<p:outputLabel value="%"/>
+		        		<p:inputText value="#{preCotizacionBean.preCotizacionDTO.utilidadPorc}" size="5">
+		        			<p:ajax event="blur" process="@this" update="resultadoTotalUtilidad" listener="#{preCotizacionBean.calculaResultadoUtilidad}"></p:ajax>
+		        		</p:inputText>
+		        		<p:outputLabel value="Resultado Utilidad riesal:"/>
+		        		<p:outputLabel  id="resultadoTotalUtilidad" value="#{preCotizacionBean.preCotizacionDTO.utilidadResult}" style="text-align:right;"/>
+		        		
+		        	</p:panelGrid>
+		        	<div align="center">
+		        	<p:panelGrid columns="3" style="width:50%" >
+				   		<p:outputLabel value="Total:"/><p:inputText id="totalPresupuesto" style="text-align: right;" value="#{preCotizacionBean.totalNetoPresupuesto + preCotizacionBean.preCotizacionDTO.total}"/>
+				   		
+				   		<p:commandButton id="calculaPorcentajes" value="Calcula Porcentajes" immediate="true" actionListener="#{preCotizacionBean.calculaCuadroProcentaje}"
+				   		 process="@this" ajax="true" update="formCotizacion:idPanelPorcentajes totalPresupuesto"/>			   		 
+				  		 <p:remoteCommand name="callRemoteMethod" actionListener="#{preCotizacionBean.calculaCuadroProcentaje}" process="@this" ajax="true" update="formCotizacion:idPanelPorcentajes totalPresupuesto"/>
+				   		 
+				   	</p:panelGrid>
+				   	</div>
+			   	</h:panelGroup>
+			   <!-- Fin -->
+	        		
+	        </h:form>
+	        <script>
+	        function calcula(){	        	
+	        	//$('.formCotizacion:calculaPorcentajes').click();
+	        	callRemoteMethod();
+	        }
+	        </script>
+	     </h:body>   
+	        	        
+</ui:composition>
