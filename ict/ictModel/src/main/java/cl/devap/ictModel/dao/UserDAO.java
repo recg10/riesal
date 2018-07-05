@@ -42,7 +42,7 @@ public class UserDAO {
 			User doc =(User)object; 
 	        
 	        manager.persist(doc);
-	        
+	        manager.flush();
 	        save=true;
 		} catch (Exception e) {
 			System.out.println(e);			
