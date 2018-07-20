@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	UserDAO userDao;
 	@Override
+	@Transactional
 	public boolean save(UserDTO userDTO) {
 		User user = new User();
 		user.setClave(userDTO.getClave());			

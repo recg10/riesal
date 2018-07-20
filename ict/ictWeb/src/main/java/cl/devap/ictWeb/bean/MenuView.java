@@ -69,7 +69,7 @@ public class MenuView {
 		FacesUtils.removeViewScopedBean("mantenedorMaterialesBean");
 		FacesUtils.removeViewScopedBean("cotizacionConsultaBean");
 		FacesUtils.removeViewScopedBean("proveedorBean");
-		FacesUtils.removeViewScopedBean("preGuiaDespachoBean");
+		FacesUtils.removeViewScopedBean("preGuiaDespachoBean");		
 		
 	}
  

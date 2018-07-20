@@ -67,7 +67,7 @@
 				              <p:selectOneMenu id="materiales" style="width:125px" value="#{preDetalleCotizacionBean.preDetalleCotizacionDTO.idMaterialCotizacion}">
 					            	<f:selectItem itemLabel="Selecione..." itemValue="" />
 				            		<f:selectItems value="#{preDetalleCotizacionBean.listMateriales}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.idMaterialCotizacion}" />
-				            		<p:ajax update="panelDeatlleMateriales" listener="#{preDetalleCotizacionBean.cargarMaterial}"/>  			           
+				            		<p:ajax update="panelDeatlleMateriales" listener="#{preDetalleCotizacionBean.cargarMaterial}"/>
 					       	  </p:selectOneMenu>
 					       	  
 				              <h:outputText value="Valor:" /> 

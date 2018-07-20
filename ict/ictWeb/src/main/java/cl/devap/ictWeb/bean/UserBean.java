@@ -94,15 +94,6 @@ public class UserBean implements Serializable{
         
     }   
 
-    
-    public void generateCode(ActionEvent event) {
-        try {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("generateCode.jsf");
-		} catch (IOException e) {
-			
-		}
-    }
-    
     public void nuevo (ActionEvent event) {
 		logger.info("nuevo");
 		setTitulo("Crear");

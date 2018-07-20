@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import cl.devap.ict.enums.EstadoCotizacion;
+import cl.devap.ict.enums.TipoMaterial;
 import cl.devap.ict.exception.IctException;
 import cl.devap.ictCommon.user.PlantelDTO;
 import cl.devap.ictCommon.user.PreCotizacionDTO;
@@ -242,19 +243,12 @@ public class PreCotizacionBean implements Serializable{
 	
 	public void realizarCotizacion(ActionEvent event) {
 		System.out.println("PASE..realizarCotizacion.");
-		try {
-			
+		try {			
 			String rowId = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("rowId");
-        	preCotizacionItemDTO = getListPreCotizacionItemDTO().get(new Integer(rowId));      	
-        	     	
-//			FacesUtils.resetManagedBean("preDetalleCotizacionBean");
-//			FacesUtils.resetManagedBean("preFabricacionBean");
-//			FacesUtils.resetManagedBean("preMOBean");
-        	
+        	preCotizacionItemDTO = getListPreCotizacionItemDTO().get(new Integer(rowId));        	
         	FacesUtils.removeViewScopedBean("preDetalleCotizacionBean");
         	FacesUtils.removeViewScopedBean("preFabricacionBean");
-        	FacesUtils.removeViewScopedBean("preMOBean");
-        	
+        	FacesUtils.removeViewScopedBean("preMOBean");        	
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage())); 
 			logger.error(e);
@@ -384,7 +378,7 @@ public class PreCotizacionBean implements Serializable{
     		return null;
     	}
     	Long total = new Long(0);
-    	total = getTotalMOPresupuesto() + getTotalMaterialesPresupuesto() + getTotalFabricacionPresupuesto();
+    	total = getTotalMOPresupuesto() + getTotalMaterialesPresupuesto() /*+ getTotalFabricacionPresupuesto()*/;
     	return total;
     }
     
@@ -398,6 +392,12 @@ public class PreCotizacionBean implements Serializable{
     		for (PreMOCotizacionDTO dto : list) {
     			total += dto.getSubTotal();
 			}
+    		
+    		List<PreFabricacionCotizacionDTO> listFabricacion = preFabricacionCotizacionService.findByItem(new Long(idCotizacion), preCotizacionItemDTO.getId(), TipoMaterial.MO.getId());
+    		for (PreFabricacionCotizacionDTO dto : listFabricacion) {
+    			total += dto.getSubTotal();
+			}
+    		
 		} catch (NumberFormatException e) {
 			logger.error(e);
 		} catch (IctException e) {
@@ -423,6 +423,12 @@ public class PreCotizacionBean implements Serializable{
     		for (PreDetalleCotizacionDTO preDetalleCotizacionDTO : list) {
     			total += preDetalleCotizacionDTO.getSubTotal();
 			}
+    		
+    		List<PreFabricacionCotizacionDTO> listFabricacion = preFabricacionCotizacionService.findByItem(new Long(idCotizacion), preCotizacionItemDTO.getId(), TipoMaterial.MATERIAL.getId());
+    		for (PreFabricacionCotizacionDTO dto : listFabricacion) {
+    			total += dto.getSubTotal();
+			}
+    		
 		} catch (NumberFormatException e) {
 			logger.error(e);
 		} catch (IctException e) {
@@ -470,7 +476,7 @@ public class PreCotizacionBean implements Serializable{
     public void calculaResultadoGO(){
     	try {
     		if (preCotizacionItemDTO!=null){
-        		this.preCotizacionDTO.setGoResult((long) ((getTotalMaterialesPresupuesto()*this.preCotizacionDTO.getGoPorc())/100));
+        		this.preCotizacionDTO.setGoResult((long) ((getTotalNetoPresupuesto()*this.preCotizacionDTO.getGoPorc())/100));
         	}   
     		
 		} catch (Exception e) {

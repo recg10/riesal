@@ -13,14 +13,28 @@
 	<p:fieldset id="fsGuiaDespacho" legend="Mostrar / Quitar Cabecera Guia" toggleable="true" toggleSpeed="500" collapsed="false">
         <p:ajax event="toggle" listener="#{preGuiaDespachoBean.handleToggle}" update="growl" />
         
-        <h:panelGrid id="panelGuiaDepacho" columns="2" columnClasses="label, value" cellpadding="5">
+        <h:panelGrid id="panelGuiaDepacho" columns="2" columnClasses="label, value" cellpadding="5" border="0" >
 		  
 		  <h:outputText value="Guia Despacho ID:" /> 
           <p:inputText  value="#{preGuiaDespachoBean.preGuiaDespachoDTO.idGuiaDespacho}" disabled="true"/>	
     	  
-    	  <h:outputText value="Rut Proveedor:" /> 
-          <p:inputText value="#{preGuiaDespachoBean.preGuiaDespachoDTO.rutProveedor}" />          	
-    	 
+    	  <h:outputText value="Rut Proveedor:" />
+    	  <ui:remove> 
+    	  <!-- 
+          <p:inputText value="#{preGuiaDespachoBean.preGuiaDespachoDTO.rutProveedor}" />
+           -->
+          </ui:remove>
+          <h:panelGroup>
+	          <p:selectOneMenu id="proveedor" value="#{preGuiaDespachoBean.preGuiaDespachoDTO.rutProveedor}">
+	            <f:selectItem itemLabel="Selecione..." itemValue="" />
+	            <f:selectItems value="#{preGuiaDespachoBean.listProveedores}" var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.rut}" />
+	            <p:ajax  listener="#{preGuiaDespachoBean.cargarRut}" update="proveedorRazon proveedorDireccion"/>
+	          </p:selectOneMenu>
+	          <h:outputLabel value="Rut:" />
+	          <h:outputLabel id="proveedorRut" value="#{preGuiaDespachoBean.proveedorDTO.rut}" />
+	          <h:outputLabel value="Dirección:" /> 
+	          <h:outputLabel id="proveedorDireccion" value="#{preGuiaDespachoBean.proveedorDTO.direccion}" />
+    	  </h:panelGroup>
           <h:outputText value="Numero de Guia:" /> 
           <p:inputText  value="#{preGuiaDespachoBean.preGuiaDespachoDTO.numeroGuia}" />
          	

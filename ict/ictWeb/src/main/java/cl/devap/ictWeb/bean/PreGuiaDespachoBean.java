@@ -22,9 +22,11 @@ import org.springframework.stereotype.Component;
 import cl.devap.ictCommon.user.PreGuiaDespachoDTO;
 import cl.devap.ictCommon.user.PreGuiaDespachoDetalleDTO;
 import cl.devap.ictCommon.user.PreMaterialCotizacionDTO;
+import cl.devap.ictCommon.user.ProveedorDTO;
 import cl.devap.ictLogic.service.GuiaDespachoDetalleService;
 import cl.devap.ictLogic.service.GuiaDespachoService;
 import cl.devap.ictLogic.service.PreMaterialService;
+import cl.devap.ictLogic.service.ProveedorService;
 import cl.devap.ictWeb.util.FacesUtils;
 
 
@@ -49,8 +51,11 @@ public class PreGuiaDespachoBean implements Serializable{
 	private PreGuiaDespachoDTO preGuiaDespachoDTO;
 	private PreGuiaDespachoDetalleDTO preGuiaDespachoDetalleDTO;
 	private List<PreMaterialCotizacionDTO> listMateriales;
+	private ProveedorDTO proveedorDTO;
 	private String leyenda="Crear";
 	private Long idGuia;
+	
+	private List<ProveedorDTO> listProveedores;
    
 	 @Autowired
 	 private GuiaDespachoService preGuiaDespachoService;
@@ -58,11 +63,15 @@ public class PreGuiaDespachoBean implements Serializable{
 	 private GuiaDespachoDetalleService preGuiaDespachoDetalleService;
 	 @Autowired
 	 private PreMaterialService preMaterialService;
+	 @Autowired
+	 private ProveedorService proveedorService;
 	 
 	@PostConstruct
 	public void init(){
-		logger.debug("init...");		
+		logger.debug("init...");
 		try {
+			setProveedorDTO(null);
+			setListProveedores(proveedorService.find());
 			setListPreGuiaDespachoDTO(preGuiaDespachoService.findAll());
 			//Cargo combobox
 			listMateriales = preMaterialService.findAll();
@@ -70,6 +79,20 @@ public class PreGuiaDespachoBean implements Serializable{
 			logger.error(e);
 		}		
 		logger.debug("fin init...");
+	}
+	
+	public void cargarRut() {
+		try {
+			proveedorDTO = new ProveedorDTO();
+			for (ProveedorDTO dto : listProveedores) {
+				if (dto.getRut().equals(this.preGuiaDespachoDTO.getRutProveedor())){
+					this.setProveedorDTO(dto);
+					break;					
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		}
 	}
 	
 	
@@ -301,6 +324,24 @@ public class PreGuiaDespachoBean implements Serializable{
 
 	public void setIdGuia(Long idGuia) {
 		this.idGuia = idGuia;
+	}
+
+
+	public List<ProveedorDTO> getListProveedores() {
+		return listProveedores;
+	}
+
+
+	public void setListProveedores(List<ProveedorDTO> listProveedores) {
+		this.listProveedores = listProveedores;
+	}
+
+	public ProveedorDTO getProveedorDTO() {
+		return proveedorDTO;
+	}
+
+	public void setProveedorDTO(ProveedorDTO proveedorDTO) {
+		this.proveedorDTO = proveedorDTO;
 	}
 
 	

@@ -66,21 +66,7 @@ public class PreDetalleCotizacionBean implements Serializable{
 			preMaterialCotizacionDTO = new PreMaterialCotizacionDTO();
 		} catch (Exception e) {
 			logger.error(e);
-		}
-		
-//		Integer idCotizacionSession= (Integer)FacesUtils.getHttpSession(false).getAttribute("idCotizacion");
-//		Long idSession= (Long)FacesUtils.getHttpSession(false).getAttribute("id");
-		
-//		if(idCotizacionSession!=null && !"".equals(idCotizacionSession)){
-//			idCotizacion = idCotizacionSession+"";
-////			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("idCotizacion", null);
-//		}
-//		
-//		if(idSession!=null ){
-//			id = idSession+"";
-////			FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("id", null);
-//		}
-		
+		}		
 		
 		idCotizacion = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("formCotizacion:idCotizacion");
 		id = (String)FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("formCotizacion:id");

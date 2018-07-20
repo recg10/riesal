@@ -166,7 +166,7 @@ public class CotizacionConsultaBean implements Serializable{
 					break;
 				}
 			}
-			ObjectFactory obj = new ObjectFactory();
+			/*ObjectFactory obj = new ObjectFactory();
 			
 			Xml cotizacion = obj.createXml();
 			cotizacion.setArea(preCotizacionDTO.getArea()+"");
@@ -203,6 +203,102 @@ public class CotizacionConsultaBean implements Serializable{
 			}
 			
 			cotizacion.setProductos(productos);
+			
+			*/
+			
+			ObjectFactory obj = new ObjectFactory();
+			
+			Xml cotizacion = obj.createXml();
+			cotizacion.setArea(preCotizacionDTO.getArea()+"");
+			cotizacion.setDescripcionTrabajo(preCotizacionDTO.getDetalleTrabajo()!=null?preCotizacionDTO.getDetalleTrabajo():"");
+			cotizacion.setDireccionEmpresa(preCotizacionDTO.getDireccion()+"");
+			cotizacion.setFechaCotizacion(preCotizacionDTO.getFecha()+"");
+			cotizacion.setNCotizacion(Short.parseShort(idCotizacion));
+			cotizacion.setRutEmpresa(preCotizacionDTO.getEmpresa()+"");
+			cotizacion.setNombreEmpresa(preCotizacionDTO.getEmpresa()!=null?preCotizacionDTO.getEmpresa():"");
+			cotizacion.setSolicita(preCotizacionDTO.getSupervisor()+"");
+			cotizacion.setPlantel(preCotizacionDTO.getPlantel()+"");
+			
+			List<PreCotizacionItemDTO> list = null;
+			try {
+				list = preCotizacionItemEJBLocal.find(Long.parseLong(idCotizacion));
+			} catch (NumberFormatException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			} catch (IctException e3) {
+				// TODO Auto-generated catch block
+				e3.printStackTrace();
+			}
+			
+			Productos productos = obj.createXmlProductos();
+			
+			for (PreCotizacionItemDTO preCotizacionItemDTO : list) {
+				Producto producto= obj.createXmlProductosProducto();
+				producto.setCantidad(preCotizacionItemDTO.getCantidad());
+				producto.setDetalle(preCotizacionItemDTO.getDescripcion());
+				producto.setNeto(preCotizacionItemDTO.getTotalNeto().intValue());
+				producto.setValorUnitario(preCotizacionItemDTO.getValorUnitario().intValue());				
+				productos.getProducto().add(producto);
+			}		
+			cotizacion.setProductos(productos);
+			
+			
+			//Calculo de totales
+			/**
+			 * valor mano obra técnicos maestros y ayudantes 					
+				materiales ferreterías y/o maquinarias arrendadas por RIESAL limitada					
+				Traslados del personal ejecutando obra					
+ 				Gasto operacional y visitas supervisor , prevencionista 					
+				Utilidad RIESAL Ltda.				
+
+			 * **/
+			
+			PreCotizacionBean preCotizacionBean = (PreCotizacionBean)FacesUtils.getManagedBean("preCotizacionBean");		
+			
+			try {
+				Double MO = (double) (preCotizacionBean.getTotalMOPresupuesto() +  preCotizacionDTO.getMoResult());
+				cotizacion.setValorManoObra(MO.intValue());
+			} catch (Exception e) {
+				cotizacion.setValorManoObra(0);
+				logger.error(e);
+			}
+			
+			try {
+				Double detalleMateriales = (double) (preCotizacionBean.getTotalMaterialesPresupuesto() + preCotizacionDTO.getMaterialesResult());
+				cotizacion.setValorMateriales(detalleMateriales.intValue());
+			} catch (Exception e) {
+				cotizacion.setValorMateriales(0);
+				logger.error(e);
+			}
+			
+			try {
+				Double utildad = preCotizacionDTO.getUtilidadResult().doubleValue();
+				cotizacion.setUtilidad(utildad.intValue());
+			} catch (Exception e) {
+				cotizacion.setUtilidad(0);
+				logger.error(e);
+			}
+			
+			
+			try {
+				Double traslado = preCotizacionDTO.getTrasladoTotal().doubleValue();
+				cotizacion.setValorTraslado(traslado.intValue());
+			} catch (Exception e) {
+				cotizacion.setValorTraslado(0);
+				logger.error(e);
+			}
+			
+			try {
+				Double go =  preCotizacionDTO.getGoResult().doubleValue();
+				cotizacion.setGastoOperacional(go.intValue());
+			} catch (Exception e) {
+				cotizacion.setGastoOperacional(0);
+				logger.error(e);
+			}
+			
+			
+			 
+			cotizacion.setTotalNeto(preCotizacionDTO.getTotalPresupuesto().intValue());
 			
 			JaxbUtil<Xml> jaxb = new JaxbUtil<Xml>(Xml.class);
 			String xml = jaxb.getXml(cotizacion);		
@@ -246,7 +342,7 @@ public class CotizacionConsultaBean implements Serializable{
 		}
       
 
-        FacesContext.getCurrentInstance().responseComplete();
+//        FacesContext.getCurrentInstance().responseComplete();
 			
 		
     }
@@ -451,7 +547,7 @@ public class CotizacionConsultaBean implements Serializable{
 		} catch (JRException e) {			
 			logger.error(e);
 		}
-        FacesContext.getCurrentInstance().responseComplete();		
+//        FacesContext.getCurrentInstance().responseComplete();		
     }
 	
 	

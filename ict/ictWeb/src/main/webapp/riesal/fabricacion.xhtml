@@ -65,16 +65,22 @@
 						actionListener="#{preFabricacionBean.nuevo}" />
 						
 				       	<p:dialog id="dlgY"  header="#{preFabricacionBean.titulo} Materiales"  widgetVar="dlgMaterialesFabricacion" resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true" >	
-				            <h:panelGrid  columns="2" columnClasses="label, value">	            
+				            <h:panelGrid  columns="2" columnClasses="label, value" id="pnlFabricacionMateriales">	            
 				            		            	
 				              <h:outputText value="Materiales:" />
 				              <p:selectOneMenu id="materiales" style="width:125px" value="#{preFabricacionBean.preFabricacionCotizacionDTO.idPreMaterialItem}">
 					           <f:selectItem itemLabel="Selecione..." itemValue="" />
-				            		<f:selectItems value="#{preDetalleCotizacionBean.listMateriales}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.idMaterialCotizacion}" />				           
+				            		<f:selectItems value="#{preFabricacionBean.listMateriales}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.idMaterialCotizacion}" />
+				            		<p:ajax update="pnlFabricacionMateriales" listener="#{preFabricacionBean.cargarMaterial}"/>				           
 					       	  </p:selectOneMenu>
 				              
+				              <h:outputText value="Stock Actual:" />
+				              <h:outputLabel  value="#{preFabricacionBean.preMaterialCotizacionDTO.stock}" />
+				              
 				              <h:outputText value="Cantidad:" />
-				              <p:inputText  value="#{preFabricacionBean.preFabricacionCotizacionDTO.unidad}" required="true" label="Cantidad:"/>
+				              <p:inputText  value="#{preFabricacionBean.preFabricacionCotizacionDTO.unidad}" required="true" label="Cantidad:">
+				              	<p:ajax update="pnlFabricacionMateriales formCotizacion:tvCotizacion:growlDetalleMateriales"  process="pnlFabricacionMateriales" listener="#{preDetalleCotizacionBean.validaStock}"></p:ajax>
+				              </p:inputText>
 				              <h:outputText value="Valor:" />
 				              <p:inputText  value="#{preFabricacionBean.preFabricacionCotizacionDTO.precio}" required="true" label="Valor:"/>	
 				              <h:outputText value="Total: $ " /><h:outputText value="#{preFabricacionBean.preFabricacionCotizacionDTO.unidad * preFabricacionBean.preFabricacionCotizacionDTO.precio}" />
@@ -164,23 +170,26 @@
 						
 							
 				       	<p:dialog id="dlgMO"  header="#{preFabricacionBean.titulo} Mano de Obra"  widgetVar="dlgMObra" resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true" >	
-				            <h:panelGrid columns="2" columnClasses="label, value">
+				            <h:panelGrid columns="2" columnClasses="label, value" id="pnlFabricacionManoObra">
 				              <h:outputText value="Trabajador:" />
 				              	<p:selectOneMenu id="trabajador" style="width:125px" value="#{preFabricacionBean.preFabricacionCotizacionDTO.idTrabajador}">
-						            <f:selectItem itemLabel="Maestro" itemValue="1" />
-						            <f:selectItem itemLabel="Ayudante" itemValue="2" />
-						            <f:selectItem itemLabel="Ayudante Avanzado" itemValue="3" />					           
-						            <f:selectItem itemLabel="Supervisor" itemValue="4" />
-						            <f:selectItem itemLabel="Conduccion" itemValue="5" />
+						           <f:selectItem itemLabel="Selecione..." itemValue="" />
+				            	   <f:selectItems value="#{preFabricacionBean.listTipoTrabajador}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.idPreTipoTrabajador}" />
+						           <p:ajax update="pnlFabricacionManoObra" listener="#{preFabricacionBean.cargarValorMO}"/>
 						       	</p:selectOneMenu>
-				              
-
+						       	
 				              <h:outputText value="Cantidad:" />
-				              <p:inputText  required="true" label="Cantidad:" value="#{preFabricacionBean.preFabricacionCotizacionDTO.unidad}"/>
+				              <p:inputText  required="true" label="Cantidad:" value="#{preFabricacionBean.preFabricacionCotizacionDTO.unidad}">
+				              	<p:ajax update=" pnlFabricacionManoObra"  process="pnlFabricacionManoObra"></p:ajax>
+				              </p:inputText>
 				              <h:outputText value="Horas:" />
-				              <p:inputText  required="true" label="Horas:" value="#{preFabricacionBean.preFabricacionCotizacionDTO.precio}"/>
+				              <p:inputText  required="true" label="Horas:" value="#{preFabricacionBean.preFabricacionCotizacionDTO.precio}">
+				              	<p:ajax update=" pnlFabricacionManoObra"  process="pnlFabricacionManoObra"></p:ajax>
+				              </p:inputText>
 				              <h:outputText value="Valor Horas:" />
-				              <p:inputText  required="true" label="Valor Horas:" value="#{preFabricacionBean.preFabricacionCotizacionDTO.valorHora}"/>
+				              <p:inputText  required="true" label="Valor Horas:" value="#{preFabricacionBean.preFabricacionCotizacionDTO.valorHora}">
+				              	<p:ajax update=" pnlFabricacionManoObra"  process="pnlFabricacionManoObra"></p:ajax>
+				              </p:inputText>				              
 							  <h:outputText value="Total: $" /><h:outputText value="#{preFabricacionBean.preFabricacionCotizacionDTO.unidad * preFabricacionBean.preFabricacionCotizacionDTO.precio * preFabricacionBean.preFabricacionCotizacionDTO.valorHora }" />
 							  
 							  <p:commandButton rendered="#{preFabricacionBean.botonVisible}" value="Guardar" process="@this MOList formCotizacion:tvCotizacion:formFabricacion:dlgMO"  update="formCotizacion:tvCotizacion:formFabricacion:MOList formCotizacion:tvCotizacion:formFabricacion:dlgMO totalDetalleMO formCotizacion:itemList " ajax="true" actionListener="#{preFabricacionBean.saveMO}"  oncomplete="PF('dlgMObra').hide();"/>							  				  	

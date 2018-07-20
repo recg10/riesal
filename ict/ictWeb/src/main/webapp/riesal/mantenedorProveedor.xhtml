@@ -50,9 +50,9 @@
 	       	<p:dialog id="dlg"  header="#{proveedorBean.titulo} Proveedor"  widgetVar="dlg" resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true" >	
 	            <h:panelGrid columns="2" columnClasses="label, value">
 	              <h:outputText value="Rut:" />
-	              <p:inputText value="#{proveedorBean.proveedorDTO.rut}" required="true" label="Rut:"/>
+	              <p:inputText value="#{proveedorBean.proveedorDTO.rut}" required="true" label="Rut:" readonly="#{!proveedorBean.botonVisible}"/>
 	              <h:outputText value="Digito:" />
-	              <p:inputText value="#{proveedorBean.proveedorDTO.digito}" required="true" label="Digito:" />
+	              <p:inputText value="#{proveedorBean.proveedorDTO.digito}" required="true" label="Digito:" readonly="#{!proveedorBean.botonVisible}"/>
 	              <h:outputText value="Razon Social" />
 	              <p:inputText value="#{proveedorBean.proveedorDTO.razonSocial}" required="true" label="razonSocial:"/>
 	              <h:outputText value="Direccion:" />

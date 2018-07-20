@@ -63,6 +63,11 @@
 						        <h:outputText rendered="#{user.estado==0}" value="Edicion" />
 						    </p:column>							 	
 						    <p:column headerText="Accion" style="text-align: center;">
+						    	<ui:remove>
+						    	<!-- 
+						    	<h:commandLink id="downloadLink" value="Download PDF" target="_blank" action="#{cotizacionConsultaBean.editarCotizacion}" />
+						    	 -->
+						    	 </ui:remove>
 						    	<p:commandLink rendered="#{user.estado=='0'}" process="@this" update="@form" ajax="true" title="Editar Cotizacion nro #{user.idCotizacion}" actionListener="#{cotizacionConsultaBean.editarCotizacion}">
 						    		<f:param name="idCotizacion" value="#{user.idCotizacion}" />	
 						    		<p:graphicImage url="/img/update.ico" width="30" height="30"  />				    				

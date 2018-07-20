@@ -22,35 +22,23 @@ public class ProveedorDAO {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	
-	
 	public void delete(Proveedor object){		
-		try {			
-			Proveedor doc = (Proveedor)object;
-			
-			entityManager.remove(entityManager.contains(doc) ? doc : entityManager.merge(doc));					
-			
+		try {
+			entityManager.remove(entityManager.contains(object) ? object : entityManager.merge(object));
 		} catch (Exception e) {
 			System.out.println(e);
-		}finally{
-			
+		}finally{			
 		}
-		
 	}
 		
 	public boolean create(Proveedor object) {
 		boolean save=false;		
 		try {
-			
-			Proveedor doc =(Proveedor)object; 
-	        
-	        entityManager.persist(doc);
-	        
+	        entityManager.persist(object);	        
 	        save=true;
 		} catch (Exception e) {
 			System.out.println(e);			
 		}finally{
-			
 		}
 		return save;
     }
@@ -83,11 +71,7 @@ public class ProveedorDAO {
     public boolean update(Proveedor object) {
     	boolean exito=false;
     	try {
-			
-			Proveedor doc = (Proveedor) object;
-			
-			entityManager.merge(doc);
-			
+			entityManager.merge(object);			
 	        exito=true;
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

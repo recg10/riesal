@@ -207,7 +207,7 @@
 		        		<p:outputLabel value="#{preCotizacionBean.totalMOPresupuesto}"/>
 		        		<p:outputLabel value="%"/>
 		        		<p:inputText id="moPorc" value="#{preCotizacionBean.preCotizacionDTO.moPorc}" size="5">
-		        			<p:ajax event="blur" process="@this" update="resultadoTotalMO" listener="#{preCotizacionBean.calculaResultadoMO}"></p:ajax>
+		        			<p:ajax event="blur" process="@this" update="resultadoTotalMO formCotizacion:totalPresupuesto" listener="#{preCotizacionBean.calculaResultadoMO}"></p:ajax>
 		        		</p:inputText>
 		        		<p:outputLabel  value="Resultado Mano Obra:"/><p:outputLabel id="resultadoTotalMO" value="#{preCotizacionBean.preCotizacionDTO.moResult}"/>
 		        		
@@ -216,7 +216,7 @@
 		        			<p:outputLabel id="totalMaterialesPresupuesto" value="#{preCotizacionBean.totalMaterialesPresupuesto}"/>
 		        			<p:outputLabel value="%"/>
 		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.materialesPorc}" size="5">
-		        				<p:ajax event="blur" process="@this" update="resultadoTotalMateriales" listener="#{preCotizacionBean.calculaResultadoMateriales}"></p:ajax>
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalMateriales formCotizacion:totalPresupuesto" listener="#{preCotizacionBean.calculaResultadoMateriales}"></p:ajax>
 		        			</p:inputText>
 		        		<p:outputLabel value="Resultado Materiales:"/><p:outputLabel id="resultadoTotalMateriales" value="#{preCotizacionBean.preCotizacionDTO.materialesResult}"/>
 		        		
@@ -227,7 +227,7 @@
 		        			</p:inputText>
 		        			<p:outputLabel value="Cantidad:"/>
 		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.trasladoCantidad}" size="5">
-		        				<p:ajax event="blur" process="@this" update="resultadoTotalTraslado" listener="#{preCotizacionBean.calculaResultadoTotalTraslado}"></p:ajax>
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalTraslado formCotizacion:totalPresupuesto" listener="#{preCotizacionBean.calculaResultadoTotalTraslado}"></p:ajax>
 		        			</p:inputText>
 		        			<p:outputLabel value="Resultado Traslado Personal:"/>
 		        			<p:outputLabel id="resultadoTotalTraslado" value="#{preCotizacionBean.preCotizacionDTO.trasladoTotal}"/>
@@ -237,7 +237,7 @@
 		        			<p:outputLabel value="#{preCotizacionBean.calculaTotal}"/>
 		        			<p:outputLabel value="%"/>
 		        			<p:inputText value="#{preCotizacionBean.preCotizacionDTO.goPorc}" size="5">		        			
-		        				<p:ajax event="blur" process="@this" update="resultadoTotalGO" listener="#{preCotizacionBean.calculaResultadoGO}"></p:ajax>
+		        				<p:ajax event="blur" process="@this" update="resultadoTotalGO formCotizacion:totalPresupuesto" listener="#{preCotizacionBean.calculaResultadoGO}"></p:ajax>
 		        			</p:inputText>
 		        			<p:outputLabel value="Resultado Gastos Operacionales:"/>
 		        			<p:outputLabel id="resultadoTotalGO" value="#{preCotizacionBean.preCotizacionDTO.goResult}"/>
@@ -247,7 +247,7 @@
 		        		<p:outputLabel value="#{preCotizacionBean.calculaTotal}"/>
 		        		<p:outputLabel value="%"/>
 		        		<p:inputText value="#{preCotizacionBean.preCotizacionDTO.utilidadPorc}" size="5">
-		        			<p:ajax event="blur" process="@this" update="resultadoTotalUtilidad" listener="#{preCotizacionBean.calculaResultadoUtilidad}"></p:ajax>
+		        			<p:ajax event="blur" process="@this" update="resultadoTotalUtilidad formCotizacion:totalPresupuesto" listener="#{preCotizacionBean.calculaResultadoUtilidad}"></p:ajax>
 		        		</p:inputText>
 		        		<p:outputLabel value="Resultado Utilidad riesal:"/>
 		        		<p:outputLabel  id="resultadoTotalUtilidad" value="#{preCotizacionBean.preCotizacionDTO.utilidadResult}" style="text-align:right;"/>
@@ -255,7 +255,7 @@
 		        	</p:panelGrid>
 		        	<div align="center">
 		        	<p:panelGrid columns="3" style="width:50%" >
-				   		<p:outputLabel value="Total:"/><p:inputText id="totalPresupuesto" style="text-align: right;" value="#{preCotizacionBean.totalNetoPresupuesto + preCotizacionBean.preCotizacionDTO.total}"/>
+				   		<p:outputLabel value="Total:"/><p:inputText id="totalPresupuesto" style="text-align: right;" value="#{preCotizacionBean.totalNetoPresupuesto + preCotizacionBean.preCotizacionDTO.utilidadResult + preCotizacionBean.preCotizacionDTO.goResult + preCotizacionBean.preCotizacionDTO.trasladoTotal + preCotizacionBean.preCotizacionDTO.materialesResult +preCotizacionBean.preCotizacionDTO.moResult}"/>
 				   		
 				   		<p:commandButton id="calculaPorcentajes" value="Calcula Porcentajes" immediate="true" actionListener="#{preCotizacionBean.calculaCuadroProcentaje}"
 				   		 process="@this" ajax="true" update="formCotizacion:idPanelPorcentajes totalPresupuesto"/>			   		 

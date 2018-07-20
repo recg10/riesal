@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import cl.devap.ict.enums.TipoMaterial;
 import cl.devap.ict.exception.IctException;
 import cl.devap.ictCommon.user.PreFabricacionCotizacionDTO;
+import cl.devap.ictCommon.user.PreMOCotizacionDTO;
 import cl.devap.ictCommon.user.PreMaterialCotizacionDTO;
 import cl.devap.ictCommon.user.PreTipoTrabajadorDTO;
 import cl.devap.ictLogic.service.PreFabricacionCotizacionService;
@@ -47,7 +48,11 @@ public class PreFabricacionBean implements Serializable{
 	private List<PreFabricacionCotizacionDTO> listPreFabricacionCotizacionDTO;
 	private List<PreFabricacionCotizacionDTO> listPreFabricacionCotizacionMODTO;	
 	
-	private List<PreMaterialCotizacionDTO> listMateriales;
+	private List<PreMaterialCotizacionDTO> listMateriales;	
+	private PreMaterialCotizacionDTO preMaterialCotizacionDTO;
+	private PreMOCotizacionDTO preMOCotizacionDTO;
+	
+	private PreTipoTrabajadorDTO tipoTrabajadorDTO; 
 	private List<PreTipoTrabajadorDTO> listTipoTrabajador;
 	private String titulo="";
 	
@@ -280,6 +285,36 @@ public class PreFabricacionBean implements Serializable{
     	return "";
     }
     
+    public void validaStock() {
+		try {			
+			if (this.preMaterialCotizacionDTO.getStock()!=null && preFabricacionCotizacionDTO.getUnidad()!=null &&
+					preFabricacionCotizacionDTO.getUnidad().intValue() > this.preMaterialCotizacionDTO.getStock().intValue()) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "El valor Ingresado en el campo de STOCK debe ser menor al STOCK ACTUAL.");
+				this.preFabricacionCotizacionDTO.setUnidad(0);
+				FacesContext.getCurrentInstance().addMessage(null, message); 
+				return;
+				
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}    
+    
+    public void cargarMaterial() {
+		try {
+			preMaterialCotizacionDTO = new PreMaterialCotizacionDTO();
+			for (PreMaterialCotizacionDTO preMaterialCotizacionDTO : listMateriales) {
+				if (preMaterialCotizacionDTO.getIdMaterialCotizacion().equals(preFabricacionCotizacionDTO.getIdPreMaterialItem())){
+					this.preMaterialCotizacionDTO = preMaterialCotizacionDTO;
+					this.preFabricacionCotizacionDTO.setPrecio(preMaterialCotizacionDTO.getPrecio().longValue());					
+					return;
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
+    
     public boolean getBotonVisible(){
 		if (titulo!=null && "Crear".equals(titulo)){
 			return true;
@@ -355,6 +390,21 @@ public class PreFabricacionBean implements Serializable{
 	public void setTotalDetalleMO(Long totalDetalleMO) {
 		this.totalDetalleMO = totalDetalleMO;
 	}
+	
+	public void cargarValorMO() {
+		try {
+			preMOCotizacionDTO = new PreMOCotizacionDTO();
+			for (PreTipoTrabajadorDTO dto : listTipoTrabajador) {
+				if (preFabricacionCotizacionDTO.getIdTrabajador().equals(dto.getIdPreTipoTrabajador())){
+					this.tipoTrabajadorDTO = dto;
+					this.preFabricacionCotizacionDTO.setValorHora(dto.getValorHora());
+					return;
+				}
+			}
+		} catch (Exception e) {
+			logger.error(e);
+		}
+	}
 
 	public Long getTotalDetalleCotizacion() {
 		totalDetalleCotizacion = new Long(0);
@@ -376,5 +426,29 @@ public class PreFabricacionBean implements Serializable{
 
 	public void setListTipoTrabajador(List<PreTipoTrabajadorDTO> listTipoTrabajador) {
 		this.listTipoTrabajador = listTipoTrabajador;
+	}
+
+	public PreMaterialCotizacionDTO getPreMaterialCotizacionDTO() {
+		return preMaterialCotizacionDTO;
+	}
+
+	public void setPreMaterialCotizacionDTO(PreMaterialCotizacionDTO preMaterialCotizacionDTO) {
+		this.preMaterialCotizacionDTO = preMaterialCotizacionDTO;
+	}
+
+	public PreTipoTrabajadorDTO getTipoTrabajadorDTO() {
+		return tipoTrabajadorDTO;
+	}
+
+	public void setTipoTrabajadorDTO(PreTipoTrabajadorDTO tipoTrabajadorDTO) {
+		this.tipoTrabajadorDTO = tipoTrabajadorDTO;
+	}
+
+	public void setPreMOCotizacionDTO(PreMOCotizacionDTO preMOCotizacionDTO) {
+		this.preMOCotizacionDTO = preMOCotizacionDTO;
+	}
+
+	public PreMOCotizacionDTO getPreMOCotizacionDTO() {
+		return preMOCotizacionDTO;
 	}
 }

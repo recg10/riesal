@@ -36,49 +36,38 @@
 		Edition annotations in your classes without needing to do any special configuration. 
 		The most commonly used annotation is @Autowired, which instructs Spring to 
 		dependency inject an object into your class. -->
-	<context:component-scan base-package="cl.devap">		
-		<context:exclude-filter expression="org.springframework.stereotype.Controller"	type="annotation" />
+	<context:component-scan base-package="cl.devap">	
+	    <!-- Con esta anotacion permite la  ejecucion de insert-->    
+	    <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation" />
 	</context:component-scan>
 	
-	<!-- <context:component-scan base-package="cl.devap.ictLogic.service.impl,cl.devap.ictModel.dao"></context:component-scan> -->
-
-
-<!--
-    <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
-        <property name="driverClassName" value="${database.driverClassName}"/>
-        <property name="url" value="${database.url}"/>
-        <property name="username" value="${database.username}"/>
-        <property name="password" value="${database.password}"/>
-        <property name="testOnBorrow" value="true"/>
-        <property name="testOnReturn" value="true"/>
-        <property name="testWhileIdle" value="true"/>
-        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
-        <property name="numTestsPerEvictionRun" value="3"/>
-        <property name="minEvictableIdleTimeMillis" value="1800000"/>
-        <property name="validationQuery" value="SELECT 1 FROM DUAL"/>
-    </bean>
-
-    <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-    
-    <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager"/>
-    
-    <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
-        <property name="persistenceUnitName" value="persistenceUnit"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>-->
- 
-	<!-- <bean id="transactionManager" class="org.springframework.transaction.jta.WebLogicJtaTransactionManager" /> -->
-
-	<!-- <bean class="com.cla.ppff.integration.util.IntegrationProperties" id="integrationProperties">
-		<property name="prop" ref="configProp" />
-	</bean>   -->
+	<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+	    <property name="url" value="jdbc:mysql://localhost:3306/riesal" />
+	    <property name="username" value="root" />
+	    <property name="password" value="root" />
+	  </bean> -->
+	  
+	 <!-- 
+	 	<tx:annotation-driven proxy-target-class="true" ransaction-manager="transactionManager" /> 
+	 -->
+	  
+	  <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/riesal"/>
+      </bean>
+	
+	  <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+	    <property name="persistenceUnitName" value="worflowJPA" />
+	    <property name="dataSource" ref="dataSource" />
+	  </bean>
+	  <tx:annotation-driven />
+	
+	  <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+	    <property name="entityManagerFactory" ref="entityManagerFactory" />
+	  </bean>
 	
 	<bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" />
-	
-	<bean id="userService" class="cl.devap.ictLogic.service.impl.UserServiceImpl"/>
-
+	<bean id="loginBean" class="cl.devap.ictWeb.bean.LoginBean" />	
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 		<property name="scopes">
 			<map>
@@ -88,5 +77,6 @@
 			</map>
 		</property>
 	</bean>
+	
 	
 </beans>
