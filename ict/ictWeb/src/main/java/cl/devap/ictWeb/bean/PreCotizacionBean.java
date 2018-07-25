@@ -113,7 +113,7 @@ public class PreCotizacionBean implements Serializable{
 				}
 				try {
 					listPreDetalleCotizacion = preDetalleCotizacionService.find(new Long(idCotizacion));
-					calculaTotalDetalleMateriales();					
+//					calculaTotalDetalleMateriales();					
 				} catch (IctException e) {
 					logger.error(e);
 				}				
@@ -128,12 +128,12 @@ public class PreCotizacionBean implements Serializable{
 		logger.debug("fin init...");
 	}
 
-	public void calculaTotalDetalleMateriales() {
-//		totalDetalleMateriales=0;
-		for (PreDetalleCotizacionDTO preDetalleCotizacionDTO : listPreDetalleCotizacion) {
-//			this.totalDetalleMateriales = this.totalDetalleMateriales + preDetalleCotizacionDTO.getSubTotal().longValue();
-		}
-	}
+//	public void calculaTotalDetalleMateriales() {
+////		totalDetalleMateriales=0;
+//		for (PreDetalleCotizacionDTO preDetalleCotizacionDTO : listPreDetalleCotizacion) {
+////			this.totalDetalleMateriales = this.totalDetalleMateriales + preDetalleCotizacionDTO.getSubTotal().longValue();
+//		}
+//	}
 	
 	
 	
@@ -466,7 +466,7 @@ public class PreCotizacionBean implements Serializable{
     public Long getCalculaTotal(){
     	long total = new Long(0);
     	try {
-        	total =getTotalFabricacionPresupuesto()+getTotalMaterialesPresupuesto()+getTotalMOPresupuesto();
+        	total =getTotalMaterialesPresupuesto()+getTotalMOPresupuesto();
 		} catch (Exception e) {
 			total = new Long(0);
 		}

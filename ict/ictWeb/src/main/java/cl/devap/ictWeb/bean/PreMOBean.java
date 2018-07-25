@@ -169,7 +169,7 @@ public class PreMOBean implements Serializable{
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registro eliminado con exito" );
                 setListPreMOCotizacionDTO(preMOCotizacionService.find(new Long(idCotizacion), new Long(id)));
                 PreCotizacionBean preCotizacionBean = (PreCotizacionBean) FacesUtils.getManagedBean("preCotizacionBean");
-                preCotizacionBean.calculaTotalDetalleMateriales();
+//                preCotizacionBean.calculaTotalDetalleMateriales();
                 calculaTotalPrincipal();
             } else {
                 message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Error al eliminar");

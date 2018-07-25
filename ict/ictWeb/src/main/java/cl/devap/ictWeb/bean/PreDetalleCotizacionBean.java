@@ -111,7 +111,7 @@ public class PreDetalleCotizacionBean implements Serializable{
 						setListPreDetalleCotizacion(preDetalleCotizacionEJBLocal.findByItem(new Long(idCotizacion), new Long(id)));
 			        	PreCotizacionBean preCotizacionBean = (PreCotizacionBean) FacesUtils.getManagedBean("preCotizacionBean");
 			            preCotizacionBean.setListPreDetalleCotizacion(listPreDetalleCotizacion);
-			            preCotizacionBean.calculaTotalDetalleMateriales();
+//			            preCotizacionBean.calculaTotalDetalleMateriales();
 			            calculaTotalPrincipal();
 					}
 				}         
@@ -138,7 +138,7 @@ public class PreDetalleCotizacionBean implements Serializable{
 	        	setListPreDetalleCotizacion(preDetalleCotizacionEJBLocal.findByItem(new Long(idCotizacion), new Long(id)));
 	        	PreCotizacionBean preCotizacionBean = (PreCotizacionBean) FacesUtils.getManagedBean("preCotizacionBean");
 	            preCotizacionBean.setListPreDetalleCotizacion(listPreDetalleCotizacion);
-	            preCotizacionBean.calculaTotalDetalleMateriales();
+//	            preCotizacionBean.calculaTotalDetalleMateriales();
 	            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registro actualizado con exito" );   
 	            calculaTotalPrincipal();
 	        } else {

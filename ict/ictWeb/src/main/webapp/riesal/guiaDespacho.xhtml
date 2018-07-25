@@ -28,7 +28,7 @@
 	          <p:selectOneMenu id="proveedor" value="#{preGuiaDespachoBean.preGuiaDespachoDTO.rutProveedor}">
 	            <f:selectItem itemLabel="Selecione..." itemValue="" />
 	            <f:selectItems value="#{preGuiaDespachoBean.listProveedores}" var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.rut}" />
-	            <p:ajax  listener="#{preGuiaDespachoBean.cargarRut}" update="proveedorRazon proveedorDireccion"/>
+	            <p:ajax  listener="#{preGuiaDespachoBean.cargarRut}" update="proveedor proveedorDireccion"/>
 	          </p:selectOneMenu>
 	          <h:outputLabel value="Rut:" />
 	          <h:outputLabel id="proveedorRut" value="#{preGuiaDespachoBean.proveedorDTO.rut}" />
