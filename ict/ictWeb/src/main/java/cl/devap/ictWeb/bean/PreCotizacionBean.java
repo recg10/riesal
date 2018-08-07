@@ -28,6 +28,7 @@ import cl.devap.ictCommon.user.PreCotizacionItemDTO;
 import cl.devap.ictCommon.user.PreDetalleCotizacionDTO;
 import cl.devap.ictCommon.user.PreFabricacionCotizacionDTO;
 import cl.devap.ictCommon.user.PreMOCotizacionDTO;
+import cl.devap.ictLogic.service.MailService;
 import cl.devap.ictLogic.service.PlantelService;
 import cl.devap.ictLogic.service.PreCotizacionItemService;
 import cl.devap.ictLogic.service.PreCotizacionService;
@@ -71,6 +72,8 @@ public class PreCotizacionBean implements Serializable{
 	
 	@Autowired
     private PreDetalleCotizacionService preDetalleCotizacionService;
+	@Autowired
+    private MailService mailService;
     @Autowired
     private PreCotizacionItemService preCotizacionItemService;    
     @Autowired
@@ -201,7 +204,8 @@ public class PreCotizacionBean implements Serializable{
 			
 			boolean save = preCotizacionService.update(preCotizacionDTO);
 	        if(save) {
-	            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registro actualizado con exito" );            
+	            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Success", "Registro actualizado con exito" );  
+	            mailService.enviarMail("rodrigo.e.castro.gonzalez@gmail.com", "Cotizacion Generada: "+preCotizacionDTO.getIdCotizacion(), "Trabajo: "+preCotizacionDTO.getTrabajo()+"");
 	        } else {
 	            message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Error", "Error al actualizar");
 	        }         
