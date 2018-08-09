@@ -57,6 +57,11 @@ public class MenuView {
 		seleccion="mantenedorProveedor";
     }
     
+    public void mantenedorParametro() {
+    	resetBeans();
+		seleccion="mantenedorParametro";
+    }
+    
     
     
 	private void resetBeans() {
@@ -70,6 +75,7 @@ public class MenuView {
 		FacesUtils.removeViewScopedBean("cotizacionConsultaBean");
 		FacesUtils.removeViewScopedBean("proveedorBean");
 		FacesUtils.removeViewScopedBean("preGuiaDespachoBean");		
+		FacesUtils.removeViewScopedBean("parametroBean");
 		
 	}
  

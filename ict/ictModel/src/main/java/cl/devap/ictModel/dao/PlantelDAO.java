@@ -34,10 +34,7 @@ public class PlantelDAO {
 	public boolean create(Plantel object) {
 		boolean save=false;		
 		try {
-			
-	        manager.getTransaction().begin();
-	        manager.persist(object);
-	        manager.getTransaction().commit();
+	        manager.persist(object);	        
 	        save=true;
 		} catch (Exception e) {
 			System.out.println(e);			
@@ -78,10 +75,7 @@ public class PlantelDAO {
     public boolean update(Plantel object) {
     	boolean exito=false;
     	try {
-			
-	        manager.getTransaction().begin();
-	        manager.merge(object);
-	        manager.getTransaction().commit();
+			manager.merge(object);	        
 	        exito=true;
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
