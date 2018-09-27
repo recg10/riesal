@@ -54,3 +54,11 @@ ict/ictCommon/.project
 ict/ictLogic/.project
 ict/ictModel/.project
 ict/.project
+ict/ictCommon/target/classes/META-INF/maven/cl.devap.ictCommon/ictCommon/pom.properties
+ict/ictCommon/target/classes/META-INF/maven/cl.devap.ictCommon/ictCommon/pom.xml
+ict/ictLogic/target/classes/META-INF/maven/cl.devap.ictLogic/ictLogic/pom.properties
+ict/ictLogic/target/classes/META-INF/maven/cl.devap.ictLogic/ictLogic/pom.xml
+ict/ictModel/target/classes/META-INF/maven/cl.devap.ictModel/ictModel/pom.xml
+ict/ictModel/target/classes/META-INF/maven/cl.devap.ictModel/ictModel/pom.properties
+ict/ictModel/bin/META-INF/persistence.xml
+ict/ictModel/bin/META-INF/MANIFEST.MF
