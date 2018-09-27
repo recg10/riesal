@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui = "http://java.sun.com/jsf/facelets">
+    <h:form id="formMenu">
+    <p:panelMenu style="width:300px">
+        <p:submenu label="Cotizaciones">
+            <p:menuitem value="Crear..." actionListener="#{menuView.crearCotizacion}" icon="ui-icon-disk" update="optionPanel"/>
+            <p:menuitem value="Consultar..." actionListener="#{menuView.consultarCotizacion}"  icon="ui-icon-arrowrefresh-1-w" update="optionPanel"/>            
+        </p:submenu>
+        <p:submenu label="Mantenedores">        	
+            <p:menuitem rendered="#{loginBean.datosUsuario.perfil==0}" value="Usuarios" actionListener="#{menuView.mantenedorUsuarios}"  ajax="false" icon="ui-icon-close"/>           
+            <p:menuitem value="Vehiculos" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/>
+            <p:menuitem value="Proveedor" actionListener="#{menuView.mantenedorProveedor}"  ajax="false" icon="ui-icon-close"/>            
+            <p:menuitem value="Parametros" actionListener="#{menuView.mantenedorParametro}"  ajax="false" icon="ui-icon-close"/>
+            <ui:remove>
+            <!-- <p:menuitem value="Matertiales" actionListener="#{menuView.mantenedorMateriales}"  ajax="false" icon="ui-icon-close"/>             -->            
+            <!-- <p:menuitem value="Perfiles" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/> -->
+            </ui:remove>
+        </p:submenu>
+        <p:submenu label="Materiales">
+            <p:menuitem value="Ingreso Guia Despacho" actionListener="#{menuView.guiaDespachoConsulta}"  ajax="false" icon="ui-icon-close"/>
+            <p:menuitem rendered="#{loginBean.datosUsuario.perfil==0}" value="Ajuste Materiales" actionListener="#{menuView.mantenedorMateriales}"  ajax="false" icon="ui-icon-close"/>
+            <p:menuitem value="Mantenedor Tipo Materiales" actionListener="#{menuView.mantenedorTipoMateriales}"  ajax="false" icon="ui-icon-close"/>            
+            <ui:remove>
+            <!-- <p:menuitem value="Perfiles" actionListener="#{menuView.delete}"  ajax="false" icon="ui-icon-close"/> -->
+            </ui:remove>
+        </p:submenu>
+        <ui:remove>
+        <!-- <p:separator />
+        <p:submenu label="Navigations" >
+            <p:submenu label="Links" icon="ui-icon-extlink">
+                <p:submenu label="PrimeFaces" icon="ui-icon-heart">
+                    <p:menuitem value="Home" url="http://www.primefaces.org" icon="ui-icon-home" />
+                    <p:menuitem value="Docs" url="http://www.primefaces.org/documentation" icon="ui-icon-document" />
+                    <p:menuitem value="Download" url="http://www.primefaces.org/downloads" icon="ui-icon-arrowthick-1-s" />
+                    <p:menuitem value="Support" url="http://www.primefaces.org/support" icon="ui-icon-wrench" />
+                </p:submenu>
+            </p:submenu>
+            <p:menuitem value="Mobile" outcome="login.xhtml" icon="ui-icon-signal" />
+        </p:submenu> -->
+        </ui:remove>
+    </p:panelMenu>
+    </h:form>
+</html>

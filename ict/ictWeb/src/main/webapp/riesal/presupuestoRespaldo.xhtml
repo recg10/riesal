@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+      <f:view>
+    <h:head>
+        <title>Menu principal</title>
+    </h:head>
+    <h:body>        
+    <center>
+    <h:graphicImage url="/img/riesal.jpg" />    
+		<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+    	<p:tabView scrollable="true" id="tvCotizacion">
+	        <p:tab title="Cotizacion">
+	        	<ui:include src="cotizacion.xhtml"/>
+	        </p:tab>
+	        <p:tab title="Detalle de Materiales">
+	        	<ui:include src="detalleMateriales.xhtml"/>	        
+	        </p:tab>
+	        <p:tab title="Detalle Mano de Obra">
+	        	<ui:include src="detalleMO.xhtml"/>
+	        </p:tab>
+	        <p:tab title="Fabricacion Material">
+	        	<ui:include src="fabricacion.xhtml"/>
+			</p:tab>
+    </p:tabView>
+    	<h:form>
+		<p:dock position="bottom" halign="center" itemWidth="40" proximity="39">								
+		    <p:menuitem value="Mantenedor Usuario" icon="/img/usuario.PNG" actionListener="#{loginBean.manUser}"/>
+		    <p:menuitem value="Mantenedor Alumnos" icon="/img/usuario.PNG" actionListener="#{loginBean.manAlumnos}"/>
+		    <p:menuitem value="Movimiento" icon="/img/pig.PNG" actionListener="#{loginBean.movements}"/>
+		    <p:menuitem value="Informes" icon="/img/informe.PNG" actionListener="#{loginBean.report}"/>
+		    <p:menuitem value="Cerrar" icon="/img/cerrar.PNG" actionListener="#{loginBean.cerrar}" ajax="true" />
+		     <p:menuitem value="devap.cl" icon="/img/devap.PNG" />
+		</p:dock>
+		</h:form>
+	</center>	
+    </h:body>
+    </f:view>
+</html>

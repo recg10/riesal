@@ -1,2 +1,9 @@
 *.class
 /target/
+*.prefs
+*.component
+*.jar
+ict/cotizaOnlineReport/.settings/org.eclipse.wst.common.project.facet.core.prefs.xml
+ict/cotizaOnlineReport/.settings/org.eclipse.wst.common.project.facet.core.xml
+*.lst
+ict/ictWeb/.metadata/src/main/webapp/WEB-INF/faces-config.pageflow

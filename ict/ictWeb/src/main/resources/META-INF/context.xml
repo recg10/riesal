@@ -1,0 +1,16 @@
+<Context path="ictWeb" crossContext="true" override="true">
+   
+    <Resource name="jdbc/riesal"
+		auth="Container"
+		type="javax.sql.DataSource"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+		maxWait="-1"
+		maxActive="20"
+		maxIdle="10"
+		url="jdbc:mysql://localhost:3306/riesal"
+		driverClassName="com.mysql.jdbc.Driver"
+		username="root"		
+		password="root"
+		accessToUnderlyingConnectionAllowed="true"
+		/>
+</Context>

@@ -1,0 +1,86 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Menu principal</title>
+    </h:head>
+    <h:body>
+    <center>
+    <h:graphicImage url="/img/ict.PNG"/>
+    </center>
+        <h:form id="form">		    
+		<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			<center>
+			<h:panelGroup id="userList">
+			<p:dataTable  var="user" value="#{userBean.listUser}" rows="10" paginator="true" style="width:70%" >
+			    <p:column headerText="Rut">
+			        <h:outputText value="#{user.rut}" />
+			    </p:column>
+			    <p:column headerText="Digito">
+			        <h:outputText value="#{user.digito}" />
+			    </p:column>
+			 	<p:column headerText="Usuario">
+			        <h:outputText value="#{user.username}" />
+			    </p:column>
+			    <p:column headerText="Contraseña">
+			        <h:outputText value="#{user.password}" />
+			    </p:column>
+			    <!-- <p:column headerText="Perfil">
+			        <h:outputText value="#{user.idPerfil.descripcion}" />
+			    </p:column> -->
+			    
+			    <p:column headerText="Accion">
+				    <p:commandLink process="@this" oncomplete="PF('dlg').show();" actionListener="#{userBean.editar}" update="form:growl form:userList form:dlg" title="Modifica Rut #{user.rut}">
+				    	<p:graphicImage url="/img/update.ico" width="30" height="30"  />
+				    	<f:param name="rutUser" value="#{user.rut}" />				    	
+				    </p:commandLink>
+				   <p:commandLink update="form:growl form:userList form:dlg" actionListener="#{userBean.eliminar}" process="@this" title="Elimina Rut #{user.username}">				   		
+				   		<f:param name="rutUser" value="#{user.rut}" />
+				     	<h:graphicImage url="/img/Delete_Icon.png" width="30" height="30" />
+				     	<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+				  	</p:commandLink>
+				  					  	
+			    </p:column>
+			    
+			</p:dataTable>
+			</h:panelGroup>
+			
+			
+			<p:commandButton value="Crear" actionListener="#{userBean.nuevo}" process="@this" title="Crea nuevo alumno"
+			oncomplete="PF('dlg').show();" update="@form" ajax="true" image="ui-icon-person" />		
+		        
+	       	<p:dialog id="dlg"  header="#{userBean.titulo} alumno"  widgetVar="dlg" resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="true" dynamic="true" >	
+	            <h:panelGrid columns="2" columnClasses="label, value">
+	              <h:outputText value="Rut:" />
+	              <p:inputText value="#{userBean.user.rut}" required="true" label="Rut:"/>
+	              <h:outputText value="Digito:" />
+	              <p:inputText value="#{userBean.user.digito}" required="true" label="Digito:" />
+	              <h:outputText value="User:" />
+	              <p:inputText value="#{userBean.user.username}" required="true" label="User:"/>
+	              <h:outputText value="Password:" />
+	              <p:inputText value="#{userBean.user.password}" required="true" label="Password:"/>	       
+				  <p:commandButton rendered="#{userBean.botonVisible}" value="Guardar" actionListener="#{userBean.saveUser}" update="userList"  ajax="true"  image="ui-icon-disk" oncomplete="PF('dlg').hide();"/>				  	
+				  <p:commandButton rendered="#{!userBean.botonVisible}" value="Modificar" actionListener="#{userBean.modificar}" update="userList"  ajax="true"  image="ui-icon-disk" oncomplete="PF('dlg').hide();"/>
+				  <p:commandButton value="Cerrar" immediate="true" ajax="true"  image="ui-icon-arrow-4-diag" onclick="PF('dlg').hide();"/>
+				  
+	            </h:panelGrid>           
+		    </p:dialog>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    </p:confirmDialog>
+		    </center>
+	    
+		<p:dock position="bottom" halign="center" itemWidth="80">								
+		    <p:menuitem value="Mantenedor Usuario" icon="/img/usuario.PNG" actionListener="#{loginBean.manUser}"/>
+		    <p:menuitem value="Mantenedor Alumnos" icon="/img/usuario.PNG" actionListener="#{loginBean.manAlumnos}"/>
+		    <p:menuitem value="Movimiento" icon="/img/pig.PNG" actionListener="#{loginBean.movements}"/>
+		    <p:menuitem value="Informes" icon="/img/informe.PNG" actionListener="#{loginBean.report}"/>
+		    <p:menuitem value="Cerrar" icon="/img/cerrar.PNG" actionListener="#{loginBean.cerrar}" ajax="true" />
+		    <p:menuitem value="devap.cl" icon="/img/devap.PNG" />
+		</p:dock>
+        
+</h:form>	
+    </h:body>
+</html>

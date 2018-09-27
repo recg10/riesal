@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"      
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    	
+        <h:form id="formMantenedorMateriales">
+        	    
+		<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+			<center>
+			<h:panelGroup id="userList">
+			<p:dataTable  var="material" rowIndexVar="rowId" value="#{mantenedorMaterialesBean.listMateriales}" rows="10" paginator="true" style="width:70%" >
+				<p:column headerText="idMaterialCotizacion">
+			        <h:outputText value="#{material.idMaterialCotizacion}" />
+			    </p:column>
+			    <p:column headerText="Tipo">
+			        <h:outputText value="#{material.preMaterialTipoDTO.descripcion}" />
+			    </p:column>
+			    <p:column headerText="Descripcion">
+			        <h:outputText value="#{material.descripcion}" />
+			    </p:column>
+			    <p:column headerText="Precio">
+			        <h:outputText value="#{material.precio}" />
+			    </p:column>
+			    
+			    <p:column headerText="Stock ">
+			        <h:outputText value="#{material.stock}" />
+			    </p:column>		
+			    
+			    <p:column headerText="Stock Critico">
+			        <h:outputText value="#{material.stockCritico}" />
+			    </p:column>
+			    					 
+			    <p:column headerText="Proveedor" visible="false">
+			        <h:outputText value="#{material.proveedorRut}" />
+			    </p:column>
+			    
+			    <p:column headerText="Proveedor" >
+			        <h:outputText value="#{material.nombreProveedor}" />
+			    </p:column>
+			    
+			    <p:column headerText="Accion">
+				    <p:commandLink process="@this formMantenedorMateriales:growl formMantenedorMateriales:userList formMantenedorMateriales:dlgMantenedorMateriales" oncomplete="PF('dlgMantenedorMateriales').show();" actionListener="#{mantenedorMaterialesBean.editar}" update="formMantenedorMateriales:growl formMantenedorMateriales:userList formMantenedorMateriales:dlgMantenedorMateriales" title="XXXModifica idMaterialCotizacion #{alumno.idMaterialCotizacion}">
+				    	<p:graphicImage url="/img/update.ico" width="30" height="30"  />
+				    	<f:param name="idMaterialCotizacion" value="#{material.idMaterialCotizacion}" />				    	
+				    </p:commandLink>
+				   <p:commandLink update="formMantenedorMateriales:growl formMantenedorMateriales:userList formMantenedorMateriales:dlgMantenedorMateriales" actionListener="#{mantenedorMaterialesBean.eliminar}" process="@this formMantenedorMateriales:growl formMantenedorMateriales:userList formMantenedorMateriales:dlgMantenedorMateriales" title="Elimina idMaterialCotizacion #{material.idMaterialCotizacion}">				   		
+				   		<!-- <f:param name="idMaterialCotizacion" value="#{material.idMaterialCotizacion}" /> -->				   		
+				   		<f:param name="rowId" value="#{rowId}" />
+				     	<h:graphicImage url="/img/Delete_Icon.png" width="30" height="30" />
+				     	<p:confirm header="Confirmacion" message="Estas seguro?" icon="ui-icon-alert" />
+				  	</p:commandLink>
+				  					  	
+			    </p:column>
+			</p:dataTable>
+			</h:panelGroup>		
+			
+			<p:commandButton value="Crear" actionListener="#{mantenedorMaterialesBean.nuevo}" process="@this formMantenedorMateriales:growl formMantenedorMateriales:userList formMantenedorMateriales:dlgMantenedorMateriales" title="Crea nuevo Material"
+			oncomplete="PF('dlgMantenedorMateriales').show();" update="@form" ajax="true" image="ui-icon-person" />		        
+	      
+	      <p:dialog id="dlgMantenedorMateriales"  header="#{mantenedorMaterialesBean.titulo} Material"  widgetVar="dlgMantenedorMateriales" resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true" >	
+	            <h:panelGrid columns="2" columnClasses="label, value">
+	              <h:outputText value="idMaterialCotizacion:" />
+	              <p:outputLabel value="#{mantenedorMaterialesBean.preMaterialCotizacionDTO.idMaterialCotizacion}" />
+	              
+	              <h:outputText value="Tipo:" />
+	                
+		          <p:selectOneMenu id="idMaterialTipo" value="#{mantenedorMaterialesBean.idMaterialTipo}">
+		            <f:selectItem itemLabel="Selecione..." itemValue="" />
+		            <f:selectItems value="#{mantenedorMaterialesBean.listMaterialTipo}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.idMaterialTipo}" />		            
+		          </p:selectOneMenu>
+			        
+	              <h:outputText value="Descripcion:" />
+	              <p:inputText value="#{mantenedorMaterialesBean.preMaterialCotizacionDTO.descripcion}" required="false" label="Descripcion:" />
+	              <h:outputText value="Precio:" />
+	              <p:inputText value="#{mantenedorMaterialesBean.preMaterialCotizacionDTO.precio}" required="false" label="Precio:"/>	              
+	              
+	              <h:outputText value="Stock:" />
+	              <p:inputText value="#{mantenedorMaterialesBean.preMaterialCotizacionDTO.stock}" required="false" label="Stock:"/>
+	              
+	              <h:outputText value="Stock Critico:" />
+	              <p:inputText value="#{mantenedorMaterialesBean.preMaterialCotizacionDTO.stockCritico}" required="false" label="Stock Critico:"/>
+	              
+	              <h:outputText value="Proveedor:" />
+	              <h:panelGroup>
+	              <p:selectOneMenu id="proveedor" value="#{mantenedorMaterialesBean.preMaterialCotizacionDTO.proveedorRut}" onchange="loadRazonSocial(this);">
+		            <f:selectItem itemLabel="Selecione..." itemValue="" />
+		            <f:selectItems value="#{mantenedorMaterialesBean.listProveedores}" var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.rut}" />
+		          </p:selectOneMenu>
+		          <h:outputText value="Rut :" />     
+		          <p:inputText id="nombreProveedor" type="text"  value="" readonly="true"/>
+	              </h:panelGroup>
+				  <p:commandButton rendered="#{mantenedorMaterialesBean.botonVisible}" value="Guardar" actionListener="#{mantenedorMaterialesBean.save}" update="userList formMantenedorMateriales:growl"  ajax="true"  image="ui-icon-disk" oncomplete="PF('dlgMantenedorMateriales').hide();"/>				  	
+				  <p:commandButton rendered="#{!mantenedorMaterialesBean.botonVisible}" value="Modificar" actionListener="#{mantenedorMaterialesBean.modificar}" update="userList formMantenedorMateriales:growl"  ajax="true"  image="ui-icon-disk" oncomplete="PF('dlgMantenedorMateriales').hide();"/>
+				  <p:commandButton value="Cerrar" immediate="true" ajax="true"  image="ui-icon-arrow-4-diag" onclick="PF('dlgMantenedorMateriales').hide();"/>				  
+	            </h:panelGrid>           
+		    </p:dialog>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    </p:confirmDialog>
+		    </center>	
+		    <script>
+		    	function loadRazonSocial (obj){		    			    		
+		    		//var valor = $("[id='formMantenedorMateriales:proveedor']").val();
+		    		$("[id='formMantenedorMateriales:nombreProveedor']").val(obj.value);
+		    	}
+		    </script>
+</h:form>	
+</ui:composition>

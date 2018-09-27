@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Registrar Asistencia</title>
+    </h:head>
+    <h:body>
+    <center>
+    	<h:graphicImage url="/img/ict.PNG"/>
+    </center>
+        <h:form>		    
+			<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+				<center>
+				<p:panel id="basic" header="Registrar asistencia" footer="Posicione su dedo indice en el lector." style="margin-bottom:20px; width:40%; text-align:center">	       
+		       		<p:messages/>
+		            <h:panelGrid id="panel1" columns="1" columnClasses="label, value">
+		              <h:outputText value="Ingrese codigo:" />
+		              <p:inputText  id="code" value=""  label="Ingrese codigo:" />
+		              <h:panelGroup id="img">
+		              	<p:graphicImage cache="false" height="200" id="dimage" title="mi foto" value="#{generateCodeBean.graphicImage}" width="200"/> 					
+		              </h:panelGroup>
+					  <p:commandButton value="Guardar"  update="growl img panel1 dimage" ajax="true" />
+		            </h:panelGrid>           
+			    </p:panel>
+			    </center>
+			    		    
+		</h:form>
+		<ui:include src="/common/menuFooter.xhtml"/>
+    </h:body>
+</html>

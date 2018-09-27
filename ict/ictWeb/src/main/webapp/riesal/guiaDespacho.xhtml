@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://java.sun.com/jsf/core"      
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+ <h:form id="formGuiaDespacho">		    
+	<p:growl id="growl" sticky="true" showDetail="true" life="1000" />
+	<h:panelGroup id="pgGuiaDespacho">
+	<p:fieldset id="fsGuiaDespacho" legend="Mostrar / Quitar Cabecera Guia" toggleable="true" toggleSpeed="500" collapsed="false">
+        <p:ajax event="toggle" listener="#{preGuiaDespachoBean.handleToggle}" update="growl" />
+        
+        <h:panelGrid id="panelGuiaDepacho" columns="2" columnClasses="label, value" cellpadding="5" border="0" >
+		  
+		  <h:outputText value="Guia Despacho ID:" /> 
+          <p:inputText  value="#{preGuiaDespachoBean.preGuiaDespachoDTO.idGuiaDespacho}" disabled="true"/>	
+    	  
+    	  <h:outputText value="Rut Proveedor:" />
+    	 
+          
+           
+          <h:panelGroup>
+          
+          
+	          <p:selectOneMenu id="proveedor" value="#{preGuiaDespachoBean.preGuiaDespachoDTO.rutProveedor}">
+	            <f:selectItem itemLabel="Selecione..." itemValue="" />
+	            <f:selectItems value="#{preGuiaDespachoBean.listProveedores}" var="item" itemLabel="#{item.razonSocial}" itemValue="#{item.rut}" />
+	            <p:ajax  listener="#{preGuiaDespachoBean.cargarRut}" update="proveedor proveedorDireccion"/>
+	          </p:selectOneMenu>
+	          <h:outputLabel value="Rut:" />
+	          <h:outputLabel id="proveedorRut" value="#{preGuiaDespachoBean.proveedorDTO.rut}" />
+	          <h:outputLabel value="Dirección:" /> 
+	          <h:outputLabel id="proveedorDireccion" value="#{preGuiaDespachoBean.proveedorDTO.direccion}" />
+    	  </h:panelGroup>
+          <h:outputText value="Numero de Guia:" /> 
+          <p:inputText  value="#{preGuiaDespachoBean.preGuiaDespachoDTO.numeroGuia}" />
+         	
+        </h:panelGrid>
+    </p:fieldset>
+    
+    <p:commandButton rendered="#{preGuiaDespachoBean.preGuiaDespachoDTO.idGuiaDespacho ==null}"
+     value="Guardar" process="formGuiaDespacho:pgGuiaDespacho" update="formGuiaDespacho:pgGuiaDespacho" ajax="true" actionListener="#{preGuiaDespachoBean.saveGuiaDespacho}" />
+    <p:commandButton rendered="#{preGuiaDespachoBean.preGuiaDespachoDTO.idGuiaDespacho !=null}" value="Modificar" 
+    process="formGuiaDespacho:pgGuiaDespacho" update="formGuiaDespacho:pgGuiaDespacho" ajax="true" actionListener="#{preGuiaDespachoBean.updateGuiaDespacho}" />
+    
+    
+	<p:commandButton rendered="#{preGuiaDespachoBean.preGuiaDespachoDTO.idGuiaDespacho !=null}" 
+	value="Finalizar" ajax="true" actionListener="#{preGuiaDespachoBean.saveGuiaDespacho}" process="@this fsGuiaDespacho" update="growl fsGuiaDespacho"/>
+    
+    <p:dataTable  id="itemList" var="pro" value="#{preGuiaDespachoBean.preGuiaDespachoDTO.listPreGuiaDespachoDetalleDTO}" rows="10" paginator="true" style="width:100%" rowIndexVar="rowId">
+			
+		<p:column headerText="idGuiaDespachoDetalle">
+	    	<h:outputText value="#{pro.idGuiaDespachoDetalle}" />						        
+	    </p:column>	
+	    <p:column headerText="idGuia">
+	    	<h:outputText value="#{pro.idGuia}" />						        
+	    </p:column>
+	    <p:column headerText="codigo">
+	    	<h:outputText value="#{pro.codigo}" />						        
+	    </p:column>
+	    <p:column headerText="cantidad">
+	    	<h:outputText value="#{pro.cantidad}" />						        
+	    </p:column>
+	     <p:column headerText="valor">
+	    	<h:outputText value="#{pro.valor}" />						        
+	    </p:column>
+	    <p:column headerText="descuento">
+	    	<h:outputText value="#{pro.descuento}" />						        
+	    </p:column>
+	    <p:column headerText="descuento valor">
+	    	<h:outputText value="#{((pro.cantidad * pro.valor)*pro.descuento/100)}" />						        
+	    </p:column>
+	    <p:column headerText="total">
+	    	<h:outputText value="#{pro.total}" />						        
+	    </p:column>
+		
+	    <p:column headerText="Accion" style="text-align: center;">
+	    	<p:commandLink  process="@this" update="@form" ajax="true" title="Actualizar Item de guia nro #{pro.idGuiaDespachoDetalle}" actionListener="#{preGuiaDespachoBean.editarGuiaDespacho}">
+	    		<f:param name="rowId" value="#{rowId}" />
+	    		<p:graphicImage url="/img/update.ico" width="30" height="30"  />				    				
+		  	</p:commandLink>	
+		  	
+		  	<p:commandLink  process="@this" update="@form" ajax="true" title="Eliminar Item de guia nro #{pro.idGuiaDespachoDetalle}" actionListener="#{preGuiaDespachoBean.eliminarGuiaDespachoDtalle}">
+	    		<f:param name="rowId" value="#{rowId}" />
+	    		<p:graphicImage url="/img/Delete_Icon.png" width="30" height="30"  />				    				
+		  	</p:commandLink>
+	    </p:column>
+	</p:dataTable>
+		
+	
+	<p:commandButton rendered="#{preGuiaDespachoBean.preGuiaDespachoDTO.idGuiaDespacho !=null}" value="Agregar Detalle" actionListener="#{preGuiaDespachoBean.agregarDetalle}" process="@this panelGuiaDepacho" update="@form formGuiaDespacho:dlgGuiaDeapacho" oncomplete="PF('wvDlgGuiaDeapacho').show();" ajax="true" />
+	
+	</h:panelGroup>
+	
+	<p:dialog id="dlgGuiaDeapacho"  header="Item Guia Despacho"   widgetVar="wvDlgGuiaDeapacho" resizable="false" visible="false" howEffect="fade" hideEffect="fade" modal="false" dynamic="true">	
+		<h:panelGrid id="panelDeatlleMateriales" columns="2" columnClasses="label, value">
+		  
+		  <p:inputText  type="hidden" value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.idGuiaDespachoDetalle}"/>
+          <p:inputText  type="hidden" value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.idGuia}"/>		
+		  
+		  
+		  <h:outputText value="Descripcion:" /> 
+          	<p:selectOneMenu id="materiales" style="width:125px" value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.codigo}">
+            	<f:selectItem itemLabel="Selecione..." itemValue="" />
+           		<f:selectItems value="#{preGuiaDespachoBean.listMateriales}" var="item" itemLabel="#{item.descripcion}" itemValue="#{item.idMaterialCotizacion}" />	
+           		<p:ajax update="panelDeatlleMateriales" listener="#{preGuiaDespachoBean.cargarPrecio}"/>  		           
+       	    </p:selectOneMenu>
+       	    
+       	    
+		  <h:outputText value="Codigo Materiales:" />
+		  <h:outputLabel value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.codigo}"/>
+          
+    	  
+    	  <h:outputText value="cantidad:" /> 
+          <p:inputText value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.cantidad}" >
+          	<p:ajax update="panelDeatlleMateriales"  process="panelDeatlleMateriales"></p:ajax>
+          </p:inputText>
+    	 
+          <h:outputText value="Valor Unitario:" /> 
+          	<p:inputText  value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.valor}" >
+          		<p:ajax update="panelDeatlleMateriales"  process="panelDeatlleMateriales"></p:ajax>
+          	</p:inputText>	
+          	
+          	<h:outputText value="Descuento:" /> 
+          	<p:inputText  value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.descuento}" >
+          		<p:ajax update="panelDeatlleMateriales"  process="panelDeatlleMateriales"></p:ajax>
+          	</p:inputText>
+          	
+          	<h:outputText value="Descuento Monto:" /> 
+          	<h:outputLabel  value="#{((preGuiaDespachoBean.preGuiaDespachoDetalleDTO.cantidad * preGuiaDespachoBean.preGuiaDespachoDetalleDTO.valor)*preGuiaDespachoBean.preGuiaDespachoDetalleDTO.descuento/100)}"/>          		
+          
+           <h:outputLabel value="Total:" /> 
+           <h:outputLabel value="#{preGuiaDespachoBean.preGuiaDespachoDetalleDTO.total}" />
+          	
+          <p:commandButton value="Guardar" process="@this dlgGuiaDeapacho" update="formGuiaDespacho:itemList" 
+          actionListener="#{preGuiaDespachoBean.saveGuiaDespachoDetalle}" ajax="true" oncomplete="PF('wvDlgGuiaDeapacho').hide();"/>
+		 
+      	</h:panelGrid>
+    </p:dialog>
+			  
+			
+</h:form>	
+</ui:composition>
